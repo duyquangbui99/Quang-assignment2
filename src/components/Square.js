@@ -1,12 +1,8 @@
-function Square({ value }) {
-    const handleClick = () => {
-        console.log(value)
-    }
+function Square({ value, onClick }) {
     return (
-        <button className="square" onClick={handleClick}>
+        <button className="square" onClick={onClick}>
             {value}
         </button>
     );
 }
-
 export default Square;

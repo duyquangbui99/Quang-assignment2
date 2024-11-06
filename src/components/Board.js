@@ -1,23 +1,33 @@
-import Square from "./Square"
+import React, { useState } from 'react';
+import { calculateWinner } from './gameUtils';
+import Square from './Square';
+
 function Board() {
+    const [squares, setSquares] = useState(Array(9).fill(null));
+    const [xIsNext, setXIsNext] = useState(true);
+
+    const handleClick = (i) => {
+        if (squares[i] || calculateWinner(squares)) return;
+
+        const newSquares = squares.slice();
+        newSquares[i] = xIsNext ? 'X' : 'O';
+        setSquares(newSquares);
+        setXIsNext(!xIsNext);
+    };
+
+    const winner = calculateWinner(squares);
+    const status = winner ? `Winner: ${winner}` : `Next player: ${xIsNext ? 'X' : 'O'}`;
+
     return (
-        <>
+        <div>
+            <div className="status">{status}</div>
             <div className="board-row">
-                <Square value="1"></Square>
-                <Square value="2"></Square>
-                <Square value="3"></Square>
+                {squares.map((value, index) => (
+                    <Square key={index} value={value} onClick={() => handleClick(index)} />
+                ))}
             </div>
-            <div className="board-row">
-                <Square value="4"></Square>
-                <Square value="5"></Square>
-                <Square value="6"></Square>
-            </div>
-            <div className="board-row">
-                <Square value="7"></Square>
-                <Square value="8"></Square>
-                <Square value="9"></Square>
-            </div>
-        </>)
+        </div>
+    );
 }
 
 export default Board;
